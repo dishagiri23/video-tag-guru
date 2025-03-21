@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
@@ -6,7 +5,6 @@ import { Footer } from "@/components/layout/Footer";
 import { VideoDetail } from "@/components/VideoDetail";
 import { VideoCard } from "@/components/VideoCard";
 import { Button } from "@/components/ui/button";
-import { demoVideos } from "@/lib/utils";
 import { Video } from "@/types";
 import { ArrowLeft } from "lucide-react";
 
@@ -15,28 +13,30 @@ export default function VideoView() {
   const [video, setVideo] = useState<Video | null>(null);
   const [relatedVideos, setRelatedVideos] = useState<Video[]>([]);
   const navigate = useNavigate();
+  
+  const [allVideos, setAllVideos] = useState<Video[]>([]);
 
   useEffect(() => {
-    // In a real app, this would fetch from API
-    const foundVideo = demoVideos.find(v => v.id === id);
+    setAllVideos([]);
+  }, []);
+
+  useEffect(() => {
+    const foundVideo = allVideos.find(v => v.id === id);
     if (foundVideo) {
       setVideo(foundVideo);
       
-      // Find related videos (same tags)
-      const related = demoVideos
+      const related = allVideos
         .filter(v => v.id !== id && v.tags.some(tag => foundVideo.tags.includes(tag)))
         .slice(0, 3);
       setRelatedVideos(related);
     }
-  }, [id]);
+  }, [id, allVideos]);
 
   const handleDelete = (videoId: string) => {
-    // In a real app, this would call an API
     navigate("/dashboard");
   };
 
   const handleUpdate = (updatedVideo: Video) => {
-    // In a real app, this would call an API
     setVideo(updatedVideo);
   };
 

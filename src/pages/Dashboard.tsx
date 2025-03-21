@@ -7,7 +7,6 @@ import { Footer } from "@/components/layout/Footer";
 import { VideoCard } from "@/components/VideoCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { demoVideos } from "@/lib/utils";
 import { Video } from "@/types";
 import { Plus, Search, Tag, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -36,7 +35,8 @@ export default function Dashboard() {
   // Load videos
   useEffect(() => {
     // In a real app, this would fetch from API
-    setVideos(demoVideos);
+    // Initialize with empty array instead of demo videos
+    setVideos([]);
   }, []);
 
   // Filter videos based on search term and tags
@@ -79,7 +79,7 @@ export default function Dashboard() {
     const newVideo: Video = {
       id: `v${videos.length + 1}`,
       title: `New Video from ${platform}`,
-      thumbnailUrl: "/lovable-uploads/3381f2a6-adb1-4a14-9cb0-a1717cbfe42d.png",
+      thumbnailUrl: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
       sourceUrl: newVideoUrl,
       sourcePlatform: platform,
       dateAdded: new Date().toISOString(),

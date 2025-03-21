@@ -68,7 +68,7 @@ export default function Index() {
               >
                 <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl border">
                   <img 
-                    src="/lovable-uploads/3381f2a6-adb1-4a14-9cb0-a1717cbfe42d.png" 
+                    src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9" 
                     alt="VideoTagGuru Dashboard" 
                     className="w-full h-full object-cover"
                   />
@@ -156,7 +156,7 @@ export default function Index() {
               >
                 <div className="rounded-2xl overflow-hidden shadow-xl">
                   <img 
-                    src="/lovable-uploads/fe501efc-e617-481e-ac64-1e0684812ed9.png" 
+                    src="https://images.unsplash.com/photo-1472396961693-142e6e269027" 
                     alt="VideoTagGuru Tags Interface" 
                     className="w-full h-full object-cover"
                   />
