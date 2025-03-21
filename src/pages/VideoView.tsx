@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
@@ -12,14 +13,18 @@ export default function VideoView() {
   const { id } = useParams<{ id: string }>();
   const [video, setVideo] = useState<Video | null>(null);
   const [relatedVideos, setRelatedVideos] = useState<Video[]>([]);
-  const navigate = useNavigate();
-  
   const [allVideos, setAllVideos] = useState<Video[]>([]);
+  const navigate = useNavigate();
 
+  // Load videos from localStorage
   useEffect(() => {
-    setAllVideos([]);
+    const savedVideos = localStorage.getItem('savedVideos');
+    if (savedVideos) {
+      setAllVideos(JSON.parse(savedVideos));
+    }
   }, []);
 
+  // Find the current video and related videos
   useEffect(() => {
     const foundVideo = allVideos.find(v => v.id === id);
     if (foundVideo) {
@@ -33,10 +38,18 @@ export default function VideoView() {
   }, [id, allVideos]);
 
   const handleDelete = (videoId: string) => {
+    // Remove from localStorage
+    const updatedVideos = allVideos.filter(v => v.id !== videoId);
+    localStorage.setItem('savedVideos', JSON.stringify(updatedVideos));
     navigate("/dashboard");
   };
 
   const handleUpdate = (updatedVideo: Video) => {
+    // Update in localStorage
+    const updatedVideos = allVideos.map(v => 
+      v.id === updatedVideo.id ? updatedVideo : v
+    );
+    localStorage.setItem('savedVideos', JSON.stringify(updatedVideos));
     setVideo(updatedVideo);
   };
 

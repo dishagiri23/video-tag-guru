@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Video } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -42,7 +41,7 @@ export function VideoDetail({ video, onDelete, onUpdate }: VideoDetailProps) {
   };
 
   const handleOpenSource = () => {
-    window.open(video.sourceUrl, "_blank");
+    window.open(video.sourceUrl, "_blank", "noopener,noreferrer");
   };
 
   return (

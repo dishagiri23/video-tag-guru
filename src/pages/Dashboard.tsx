@@ -32,11 +32,12 @@ export default function Dashboard() {
     }
   }, [isAuthenticated, navigate]);
 
-  // Load videos
+  // Load videos from localStorage
   useEffect(() => {
-    // In a real app, this would fetch from API
-    // Initialize with empty array instead of demo videos
-    setVideos([]);
+    const savedVideos = localStorage.getItem('savedVideos');
+    if (savedVideos) {
+      setVideos(JSON.parse(savedVideos));
+    }
   }, []);
 
   // Filter videos based on search term and tags
@@ -68,18 +69,33 @@ export default function Dashboard() {
       return;
     }
 
-    // In a real app, this would call an API to extract video info
+    // Determine platform and thumbnail
     let platform = "Website";
-    if (newVideoUrl.includes("youtube")) platform = "YouTube";
+    let thumbnailUrl = "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9";
+    
+    if (newVideoUrl.includes("youtube") || newVideoUrl.includes("youtu.be")) {
+      platform = "YouTube";
+      // Extract YouTube video ID
+      let videoId = "";
+      if (newVideoUrl.includes("youtu.be/")) {
+        videoId = newVideoUrl.split("youtu.be/")[1].split("?")[0];
+      } else if (newVideoUrl.includes("youtube.com/watch?v=")) {
+        videoId = newVideoUrl.split("v=")[1].split("&")[0];
+      }
+      if (videoId) {
+        thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      }
+    }
+    
     if (newVideoUrl.includes("instagram")) platform = "Instagram";
     if (newVideoUrl.includes("tiktok")) platform = "TikTok";
     if (newVideoUrl.includes("twitter") || newVideoUrl.includes("x.com")) platform = "Twitter";
     if (newVideoUrl.includes("linkedin")) platform = "LinkedIn";
 
     const newVideo: Video = {
-      id: `v${videos.length + 1}`,
+      id: `v${Date.now()}`,
       title: `New Video from ${platform}`,
-      thumbnailUrl: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      thumbnailUrl: thumbnailUrl,
       sourceUrl: newVideoUrl,
       sourcePlatform: platform,
       dateAdded: new Date().toISOString(),
@@ -87,7 +103,12 @@ export default function Dashboard() {
       notes: ""
     };
 
-    setVideos(prev => [newVideo, ...prev]);
+    const updatedVideos = [newVideo, ...videos];
+    setVideos(updatedVideos);
+    
+    // Save to localStorage
+    localStorage.setItem('savedVideos', JSON.stringify(updatedVideos));
+    
     setNewVideoUrl("");
     setIsAddingVideo(false);
     
